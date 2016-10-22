@@ -1,0 +1,89 @@
+{% extends "jd_like/template.html" %}
+
+
+
+{% block css %}
+    .form_outer{
+            width: 500px;
+            height: 600px;
+            border: 2px solid red;
+            /*position: relative;*/
+        }
+
+    form{
+        width: 450px;
+        height: 500px;
+        background-color: aqua;
+        margin-top: 50px;
+        margin-left: 25px;
+    }
+
+    .item{
+        margin: 20px;
+    }
+
+    .item span{
+        color: red;
+
+    }
+{% endblock %}
+
+
+
+{% block pg_body_content %}
+
+    <div class="form_outer">
+        <form action="" method="POST">
+            <div class="item">
+                用户名
+                <input id="id_username" type="text" name="username" value="input username" label="用户名" required="true">
+                <!--<span>用户名不能为空</span>-->
+            </div>
+
+            <div class="item">
+                密码
+                <input id="id_password" type="password" name="password" label="密码" required="true" len_min="6" len_max="16">
+                <!--<span>密码不能为空</span>-->
+            </div>
+
+            <div>
+                <!--<input type="submit" value="submit" onclick="return checkValid();">-->
+                <!--使用jquery动态的绑定方法-->
+                <input type="submit" value="from 登录" class="form_submit">
+                <input type="button" value="ajax 登录" onclick="ajaxSubmit();">
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+
+
+
+{% block js %}
+    <script src="/statics/plugin/jquery.js"></script>
+    <script src="/statics/js/jq_extends_valid.js"></script>
+    <script>
+        function ajaxSubmit() {
+
+            var username = $("#id_username").val();
+            var password = $("#id_password").val();
+            var data_dict = { "username":username, "password":password }
+
+            $.ajax({
+                url:"/jd_like/ajax_demo_login/",
+                type:"POST",
+                data:data_dict,
+                success:function (data) {
+                    if(data == "ok"){
+                        location.href = "/jd_like/jd_main_page/"
+                    }else {
+                        alert("用户名或者密码不正确");
+                    }
+                }
+            })
+        }
+
+    </script>
+{% endblock %}

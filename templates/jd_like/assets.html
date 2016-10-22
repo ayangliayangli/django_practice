@@ -1,0 +1,19 @@
+{% extends "jd_like/template.html" %}
+
+
+{% block pg_body_content %}
+    <ul>
+        {% for assets_info in assets_info_list %}
+            <li>
+                hostname:{{ assets_info.hostname }} ip: {{ assets_info.ip }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        document.getElementById("menu_assets").classList.add("active")
+    </script>
+{% endblock %}

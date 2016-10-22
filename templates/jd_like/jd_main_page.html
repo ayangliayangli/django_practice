@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home work</title>
+    <style>
+        body{
+            margin: 0 0;
+        }
+
+        /*用于一次性的撑开 有float的div的 父div*/
+
+        .clearfix:after{
+            content: ".";
+            display: block;
+            clear: both;
+            visibility: hidden;
+            height: 0px;
+        }
+
+        .center980{
+            /*让980宽度的div水平居中显示*/
+            /*疑问:这里不能保证完全的居中,但是如果使用position相对window来移动*/
+            /*会导致这个层飘起来了,然后父div不能撑开*/
+            width: 980px;
+            height: 44px;
+            /*position: absolute;*/
+            /*left: 50%;*/
+            margin-left: 10%;
+
+            }
+
+        .page_header{
+            border: 2px;
+            background-color: darkgray;
+
+        }
+
+        .page_header_left{
+            float: right;
+            width: 70%;
+        }
+        
+        .page_header div ul li, .page_body_line div div ul li {
+            float: left;
+            padding:0px 20px 0px 20px;
+            list-style-type: none;
+            cursor: pointer;
+
+        }
+
+        .page_header div ul li:hover, .page_body_line div div ul li:hover{
+            background-color: lightgray;
+        }
+
+        .page_body{
+
+        }
+
+        .page_body_top{
+            background-color: aqua;
+            width:100%;
+            height: 100px;
+            position: relative;
+        }
+
+        .page_body_line{
+            background-color: firebrick;
+            width:100%;
+            height: 44px;
+        }
+
+        .logo{
+            width: 20%;
+            height:60%;
+            float: left;
+            background-image: url("/statics/img/logo.png");
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            margin-top: 10px;
+        }
+
+        .search{
+            background-color: antiquewhite;
+            width: 60%;
+            height: 60%;
+            margin-top: 10px;
+            float: left;
+
+        }
+
+        .shop_car{
+            background-color: lightgray;
+            height: 60%;
+            width: 20%;
+            float: left;
+            margin-top: 10px;
+
+        }
+
+        .shop_car_logo{
+            background-image: url("https://misc.360buyimg.com/jdf/1.0.0/unit/globalImages/1.0.0/jd2015img.png");
+            width:50px;
+            height:30px;
+            background-repeat: no-repeat;
+            background-position: 0px -57px;
+            float: left;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .page_body_line_left{
+            background-color: white;
+            width: 20%;
+            float: left;
+
+        }
+
+        .page_body_line_left_item{
+            height: 50px;
+            width: 100%;
+            border-bottom: 3px solid gray;
+            /*border: 3px solid lightgray;*/
+        }
+
+        .page_body_line_left_item_top{
+            height: 60%;
+            width: 100%;
+            font-size: x-large;
+        }
+
+        .page_body_line_left_item_bottom{
+            height: 40%;
+            font-size: small;
+        }
+
+        .page_body_main_content{
+            background-color: whitesmoke;
+            width:70%;
+            float: left;
+        }
+
+        .pge_body_main_content_menu{
+            border-top: 3px solid red;
+            border-right: 1px solid grey;
+            border-bottom: 1px solid grey;
+            border-left: 1px solid grey;
+        }
+
+        .pic{
+            width: 200px;
+            height: 210px;
+            background-color: bisque;
+            margin: 10px;
+            float: left;
+        }
+
+        .pic_src{
+            background-image: url("/statics/img/wg1.jpg");
+            background-repeat: no-repeat;
+            background-position: -396px -514px;
+            width: 180px;
+            height: 150px;
+            margin: 5px 10px 5px 10px;
+        }
+
+        .pic_desc{
+            margin: 0px 30px 0px 30px;
+        }
+        .pic_price{
+            float: left;
+            height:20px;
+            width: 60px;
+        }
+
+        .count{
+            float: left;
+            height: 20px;
+            width: 100px;
+            border: 1px solid grey;
+        }
+        .count_sub{
+            height: 30px;
+            width:20%;
+            float: left;
+
+        }
+
+        .count_input{
+            height: 30px;
+            width:60%;
+            float: left;
+
+        }
+
+        .count_input_input{
+            width: 50px;
+        }
+
+        .count_plus{
+            height: 30px;
+            width:20%;
+            float: left;
+
+        }
+
+        .shop{
+            float: right;
+            margin-right: 20px;
+            height: 20px;
+            background-color: red;
+
+        }
+
+        .page_button{
+            background-color: antiquewhite;
+            width:100%;
+            height: 50px;
+        }
+
+        .text_center{
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="page_header">
+    <div style="width: 980px;height: 44px;margin-left: 30px ;">
+
+        <div style="float: left;">
+            <ul>
+                <li>收藏本站</li>
+            </ul>
+        </div>
+
+        <div class="page_header_left">
+            <ul>
+                <li>登录</li>
+                <li>注册</li>
+                <li>我的订单</li>
+                <li>VIP注册会员</li>
+            </ul>
+        </div>
+
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+<br>
+
+<div class="page_body">
+
+    <div class="page_body_top">
+
+        <div style="width: 980px;height:100%;position: absolute; right: 50px;bottom: auto">
+
+            <div class="logo">
+                logo
+            </div>
+            <div class="search">
+                <div style="width: 100%;height: 70%">
+                    <input type="text" style="width: 70%;height: 80%;margin-left: 5px">
+                    <span style="width: 20%;height: 80%">
+                        搜索吧
+                    </span>
+                </div>
+
+                <div style="width: 100%;height: 30%">
+                    <label style="margin-right: 5px;margin-left: 5px">热门搜索:</label>
+                    <label style="margin-right: 5px">python</label>
+                    <label style="margin-right: 5px">html</label>
+                    <label style="margin-right: 5px">js</label>
+                    <label style="margin-right: 5px">css</label>
+                </div>
+            </div>
+
+            <div class="shop_car">
+                <div class="shop_car_logo">
+
+                </div>
+
+                <a href="https://github.com/yangllsdev" style="height: 30px; float: left;margin-top:20px">我的购物车</a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="page_body_line">
+
+        <div class="center980">
+
+            <div style="float: left;width: 30%;">
+                <ul>
+                    <li>全部商品分类</li>
+                </ul>
+            </div>
+
+            <div class="page_header_left">
+                <ul>
+                    <li>首页</li>
+                    <li>网上超时</li>
+                    <li>水果超时</li>
+                    <li>超级订餐</li>
+                    <li>生活娱乐</li>
+{#                    <li>研究院</li>#}
+                    <li><a href="/jd_like/userinfo/">后台管理</a></li>
+                </ul>
+            </div>
+            <!--div飘起来的时候需要加上下面这句,把父div撑开-->
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+
+
+
+    <div style="width: 100%;" name="page_body_content">
+        <div class="clearfix center980" style="height: auto">
+            <div class="page_body_line_left">
+                <div style="margin: 10px; border-top: 3px solid grey;border-left: 3px solid grey; border-right: 3px solid gray">
+
+                    <div name="page_body_line_left_item" class="page_body_line_left_item">
+                        <div class="page_body_line_left_item_top">
+                            南方水果
+                        </div>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                    </div>
+
+                    <div name="page_body_line_left_item" class="page_body_line_left_item">
+                        <div class="page_body_line_left_item_top">
+                            北方水果
+                        </div>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                    </div>
+
+                    <div name="page_body_line_left_item" class="page_body_line_left_item">
+                        <div class="page_body_line_left_item_top">
+                            东方水果
+                        </div>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                    </div>
+
+                    <div name="page_body_line_left_item" class="page_body_line_left_item">
+                        <div class="page_body_line_left_item_top">
+                            西方水果
+                        </div>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                        <span class="page_body_line_left_item_bottom">火龙果</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="page_body_main_content">
+                <!--用来占位置的div-->
+                <div style="height: 20px"></div>
+
+                <div style="margin: 5px;">
+                    <a href="https://github.com/yangllsdev">JEEP>牧马人</a>
+                </div>
+
+
+                <div name="pge_body_main_content_menu" class="pge_body_main_content_menu">
+                    <div style="margin: 10px">
+                        <span style="font-size: large">您已经选择:</span>
+                        <span> 苹果 </span>
+                    </div>
+
+                    <div style="border-top: 1px solid gray;margin: 15px;">
+                        <div style="margin: 10px">
+                            <span style="font-size: large">材质:</span>
+                            <span> 材质1 </span>
+                            <span> 材质1 </span>
+                            <span> 材质1 </span>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid gray;margin: 15px;">
+                        <div style="margin: 10px">
+                            <span style="font-size: large">品牌:</span>
+                            <span> 品牌1 </span>
+                            <span> 品牌1 </span>
+                            <span> 品牌1 </span>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid gray;margin: 15px;">
+                        <div style="margin: 10px">
+                            <span style="font-size: large">风格:</span>
+                            <span> 风格1 </span>
+                            <span> 风格1 </span>
+                            <span> 风格1 </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div name="sort" style="height: 30px;border: 1px solid slategray;margin-top: 5px">
+                    <div style="margin: 3px;margin-top: 10px">
+                        排序:
+                        <a href="https://github.com/yangllsdev">价格</a>
+                        <a href="https://github.com/yangllsdev">销量</a>
+                        <a href="https://github.com/yangllsdev">最新</a>
+                    </div>
+
+                </div>
+
+                <div name="pics" class="clearfix">
+
+                    <!--一个pic开始-->
+                    <div name="pic" class="pic">
+                        <div name="pic_src" class="pic_src"> </div>
+                        <div>
+                            <div style="margin: 2px 10px 2px 10px">
+                                <span class="pic_desc">jeep 自由光</span>
+                            </div>
+                        </div>
+                        <div name="pic_price" class="pic_price">
+                            <span>480,000</span>
+                        </div>
+
+                        <div name="count" class="count">
+                            <div name="count_sub" class="count_sub">
+                                <span> - </span>
+                            </div>
+
+                            <div name="count_input" class="count_input">
+                                <input type="text" value="1" class="count_input_input">
+                            </div>
+
+                            <div name="count_plus" class="count_plus">
+                                <span> + </span>
+                            </div>
+
+                        </div>
+
+                        <div name="shop" class="shop">
+                            <span>买</span>
+                        </div>
+
+                    </div>
+                    <!--一个pic结束-->
+
+                    <!--一个pic开始-->
+                    <div name="pic" class="pic">
+                        <div name="pic_src" class="pic_src"> </div>
+                        <div>
+                            <div style="margin: 2px 10px 2px 10px">
+                                <span class="pic_desc">jeep 自由光</span>
+                            </div>
+                        </div>
+                        <div name="pic_price" class="pic_price">
+                            <span>480,000</span>
+                        </div>
+
+                        <div name="count" class="count">
+                            <div name="count_sub" class="count_sub">
+                                <span> - </span>
+                            </div>
+
+                            <div name="count_input" class="count_input">
+                                <input type="text" value="1" class="count_input_input">
+                            </div>
+
+                            <div name="count_plus" class="count_plus">
+                                <span> + </span>
+                            </div>
+
+                        </div>
+
+                        <div name="shop" class="shop">
+                            <span>买</span>
+                        </div>
+
+                    </div>
+                    <!--一个pic结束-->
+
+                    <!--一个pic开始-->
+                    <div name="pic" class="pic">
+                        <div name="pic_src" class="pic_src"> </div>
+                        <div>
+                            <div style="margin: 2px 10px 2px 10px">
+                                <span class="pic_desc">jeep 自由光</span>
+                            </div>
+                        </div>
+                        <div name="pic_price" class="pic_price">
+                            <span>480,000</span>
+                        </div>
+
+                        <div name="count" class="count">
+                            <div name="count_sub" class="count_sub">
+                                <span> - </span>
+                            </div>
+
+                            <div name="count_input" class="count_input">
+                                <input type="text" value="1" class="count_input_input">
+                            </div>
+
+                            <div name="count_plus" class="count_plus">
+                                <span> + </span>
+                            </div>
+
+                        </div>
+
+                        <div name="shop" class="shop">
+                            <span>买</span>
+                        </div>
+
+                    </div>
+                    <!--一个pic结束-->
+
+                    <!--一个pic开始-->
+                    <div name="pic" class="pic">
+                        <div name="pic_src" class="pic_src"> </div>
+                        <div>
+                            <div style="margin: 2px 10px 2px 10px">
+                                <span class="pic_desc">jeep 自由光</span>
+                            </div>
+                        </div>
+                        <div name="pic_price" class="pic_price">
+                            <span>480,000</span>
+                        </div>
+
+                        <div name="count" class="count">
+                            <div name="count_sub" class="count_sub">
+                                <span> - </span>
+                            </div>
+
+                            <div name="count_input" class="count_input">
+                                <input type="text" value="1" class="count_input_input">
+                            </div>
+
+                            <div name="count_plus" class="count_plus">
+                                <span> + </span>
+                            </div>
+
+                        </div>
+
+                        <div name="shop" class="shop">
+                            <span>买</span>
+                        </div>
+
+                    </div>
+                    <!--一个pic结束-->
+
+                    <!--一个pic开始-->
+                    <div name="pic" class="pic">
+                        <div name="pic_src" class="pic_src"> </div>
+                        <div>
+                            <div style="margin: 2px 10px 2px 10px">
+                                <span class="pic_desc">jeep 自由光</span>
+                            </div>
+                        </div>
+                        <div name="pic_price" class="pic_price">
+                            <span>480,000</span>
+                        </div>
+
+                        <div name="count" class="count">
+                            <div name="count_sub" class="count_sub">
+                                <span> - </span>
+                            </div>
+
+                            <div name="count_input" class="count_input">
+                                <input type="text" value="1" class="count_input_input">
+                            </div>
+
+                            <div name="count_plus" class="count_plus">
+                                <span> + </span>
+                            </div>
+
+                        </div>
+
+                        <div name="shop" class="shop">
+                            <span>买</span>
+                        </div>
+
+                    </div>
+                    <!--一个pic结束-->
+                    <!--一个pic开始-->
+                    <div name="pic" class="pic">
+                        <div name="pic_src" class="pic_src"> </div>
+                        <div>
+                            <div style="margin: 2px 10px 2px 10px">
+                                <span class="pic_desc">jeep 自由光</span>
+                            </div>
+                        </div>
+                        <div name="pic_price" class="pic_price">
+                            <span>480,000</span>
+                        </div>
+
+                        <div name="count" class="count">
+                            <div name="count_sub" class="count_sub">
+                                <span> - </span>
+                            </div>
+
+                            <div name="count_input" class="count_input">
+                                <input type="text" value="1" class="count_input_input">
+                            </div>
+
+                            <div name="count_plus" class="count_plus">
+                                <span> + </span>
+                            </div>
+
+                        </div>
+
+                        <div name="shop" class="shop">
+                            <span>买</span>
+                        </div>
+
+                    </div>
+                    <!--一个pic结束-->
+
+                    <!--一个pic开始-->
+                    <div name="pic" class="pic">
+                        <div name="pic_src" class="pic_src"> </div>
+                        <div>
+                            <div style="margin: 2px 10px 2px 10px">
+                                <span class="pic_desc">jeep 自由光</span>
+                            </div>
+                        </div>
+                        <div name="pic_price" class="pic_price">
+                            <span>480,000</span>
+                        </div>
+
+                        <div name="count" class="count">
+                            <div name="count_sub" class="count_sub">
+                                <span> - </span>
+                            </div>
+
+                            <div name="count_input" class="count_input">
+                                <input type="text" value="1" class="count_input_input">
+                            </div>
+
+                            <div name="count_plus" class="count_plus">
+                                <span> + </span>
+                            </div>
+
+                        </div>
+
+                        <div name="shop" class="shop">
+                            <span>买</span>
+                        </div>
+
+                    </div>
+                    <!--一个pic结束-->
+
+                </div>
+
+            </div>
+            <!--main content over-->
+
+            <div style="clear: both;"></div>
+
+        </div>
+        <!--body center980 over-->
+
+        <div style="clear: both;"></div>
+
+    </div>
+    <!--body content over-->
+
+</div>
+
+
+<div class="page_button">
+    <div class="text_center">
+            最终解释权归【杨力】所有 &nbsp;&nbsp;杨力 185 658 66568  yangliw3@foxmail.com
+    </div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends "jd_like/template.html" %}
+
+
+
+
+
+
+{% block pg_body_content %}
+
+        <table border="1px solid red">
+            <thead>
+                <tr>
+                    <td>用户名</td>
+                    <td>密码</td>
+                    <td>手机号</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in user_info_list %}
+                    <tr>
+                        <td>{{ item.username }}</td>
+                        <td>{{ item.password }}</td>
+                        <td>{{ item.phone }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        document.getElementById("menu_user").classList.add("active")
+    </script>
+{% endblock %}

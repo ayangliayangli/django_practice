@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+{#        允许子类修改title#}
+        {% block title %}
+            template
+        {% endblock %}
+    </title>
+
+    <style>
+        body{
+            margin: 0px;
+        }
+
+        .pg_header{
+            background-color: green;
+            height: 100px;
+        }
+
+        .pg_body{
+            height: 600px;
+            position: relative;
+
+        }
+
+        .pg_body .pg_body_menu{
+            border:1px solid red;
+            width: 300px;
+            position: absolute;
+            top:10px;
+            bottom: 10px;
+            left: 0px;
+
+
+        }
+
+        .pg_body .pg_body_content{
+            overflow: auto;
+            margin-left: 300px;
+            background-color: antiquewhite;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            bottom:10px;
+            right: 10px;
+
+        }
+
+        .pg_footer{
+            background-color: gray;
+            height: 50px;
+        }
+
+        .active{
+            background-color: aqua;
+        }
+
+
+        .text_center{
+            text-align: center;
+        }
+
+{#        允许子类修改css#}
+        {% block css %}
+        {% endblock %}
+    </style>
+
+
+</head>
+<body>
+
+
+    <div class="pg_header">
+        <div class="text_center" style="font-size: 30px">
+            欢迎访问后台管理系统
+            <br>
+            powered by <a href="https://github.com/yangllsdev">杨力</a>
+        </div>
+    </div>
+
+    <div class="pg_body">
+        <div class="pg_body_menu">
+            <ul>
+                <li>
+                    <a id="menu_user" href="/jd_like/userinfo">用户信息</a>
+                </li>
+                <li>
+                    <a id="menu_assets" href="/jd_like/assets">资产信息</a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="pg_body_content">
+{#            允许子类修改内容#}
+            {% block pg_body_content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <div class="pg_footer">
+        <div class="text_center">
+            最终解释权归【杨力】所有 &nbsp;&nbsp;杨力 185 658 66568  yangliw3@foxmail.com
+        </div>
+    </div>
+
+{#    允许子类修改js#}
+    {% block js %}
+    {% endblock %}
+</body>
+</html>
