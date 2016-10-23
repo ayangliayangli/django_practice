@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>menu with jquery</title>
+
+    <style>
+        body{
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .top_menu{
+            position: fixed;
+            height: 80px;
+            background-color: blue;
+            top: 0;
+            right: 0;
+            left: 0;
+
+        }
+
+        .top_menu_item{
+            float: left;
+        }
+
+        .top_title{
+            line-height: 80px;
+            padding: 50px;
+            font-size: larger;
+        }
+
+        .left_menu{
+            width: 200px;
+            border:1px solid gray;
+            top:90px;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            overflow: auto;
+        }
+
+        .left_menu_title{
+            font-size: larger;
+            background-color: lawngreen;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .hidden{
+            display: none;
+        }
+
+        .pg_main_content_wrapper{
+            background-color: antiquewhite;
+            position: fixed;
+            left: 210px;
+            top: 90px;
+            right: 0px;
+            bottom: 0px;
+            overflow: auto;
+        }
+
+        .pg_footer{
+            margin-top: 10px;
+            margin-left: 210px;
+            height:50px;
+            background-color: black;
+        }
+
+        {% block css %}
+        {% endblock %}
+
+
+    </style>
+
+
+</head>
+<body>
+
+
+<div class="top_menu">
+    <div class="top_menu_item">
+        <a class="top_title">标题1</a>
+        <a class="top_title">标题1</a>
+        <a class="top_title">标题1</a>
+        <a class="top_title">标题1</a>
+        <a class="top_title">标题1</a>
+    </div>
+
+
+    <div class="top_menu_item" style="float: right">
+        {% block top_right %}
+            <a class="top_title" href="http://www.baidu.com">登录</a>
+            <a class="top_title">注册</a>
+        {% endblock %}
+    </div>
+
+
+</div>
+
+<div class="pg_body">
+    <div class="left_menu">
+        <div class="item">
+            <div class="left_menu_title">
+                标题1
+            </div>
+            <div class="left_menu_content">
+                <p>内容1</p>
+                <p>内容1</p>
+                <p>内容1</p>
+                <p>内容1</p>
+                <p>内容1</p>
+                <p>内容1</p>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="left_menu_title" >
+                标题2
+            </div>
+            <div class="left_menu_content hidden">
+                <p>内容2</p>
+                <p>内容2</p>
+                <p>内容2</p>
+                <p>内容2</p>
+                <p>内容2</p>
+                <p>内容2</p>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="left_menu_title" >
+                标题3
+            </div>
+            <div class="left_menu_content hidden">
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+                <p>内容3</p>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="left_menu_title" >
+                标题4
+            </div>
+            <div class="left_menu_content hidden">
+                <p>内容4</p>
+                <p>内容4</p>
+                <p>内容4</p>
+                <p>内容4</p>
+                <p>内容4</p>
+                <p>内容4</p>
+                <p>内容4</p>
+                <p>内容4</p>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="left_menu_title" >
+                标题5
+            </div>
+            <div class="left_menu_content hidden">
+                <p>内容5</p>
+                <p>内容5</p>
+                <p>内容5</p>
+                <p>内容5</p>
+                <p>内容5</p>
+                <p>内容5</p>
+                <p>内容5</p>
+                <p>内容5</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="pg_main_content_wrapper">
+        {% block pg_main_content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+
+
+<div class="pg_footer">
+
+</div>
+
+
+{% block js %}
+{% endblock %}
+
+
+<script src="/statics/plugin/jquery.js"></script>
+<script>
+
+    // 延迟绑定点击事件
+    $('.item').delegate(".left_menu_title", "click", function () {
+        $(this).next().removeClass("hidden")
+        $(this).parent().siblings().find(".left_menu_content").addClass("hidden")
+    })
+
+//function showContent(ths) {
+////    console.log(ths)
+//    $(ths).next().removeClass("hidden");
+//    $(ths).parent().siblings().find(".left_menu_content").addClass("hidden")
+//}
+
+</script>
+
+</body>
+</html>

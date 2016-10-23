@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jd_like',
+    'chouti_like',
 ]
 
 MIDDLEWARE_CLASSES = [

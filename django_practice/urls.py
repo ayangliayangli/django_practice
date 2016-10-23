@@ -20,5 +20,6 @@ from jd_like import views as views_jd_like
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^jd_like/', include("jd_like.urls", namespace="jd_like")),
-    url(r'^$', views_jd_like.index),
+    url(r'^chouti_like/', include("chouti_like.urls", namespace="chouti_like")),
+    # url(r'^$', views_jd_like.index),
 ]

@@ -26,6 +26,8 @@
         解决办法：把submit换成button,那么form将永远不会跳转,知道前段后段都验证通过后,ajax函数里面触发 location.href 跳转
 * 其他
 
-# todu
+# todo
 
-* 主页可以直接访问（绕过登录）,因为还在研究session 和 cookie , 暂时不能记住用户登录状态
+
+-[x] 修改readme.md 文档 
+-[ ] 主页可以直接访问（绕过登录）,因为还在研究session 和 cookie , 暂时不能记住用户登录状态
