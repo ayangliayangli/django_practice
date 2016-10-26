@@ -11,7 +11,7 @@ class UserTypeAdmin(admin.ModelAdmin):
 
 
 class UserInfoAdmin(admin.ModelAdmin):
-    list_display = ("id", "username", "password", "email", "phone", "user_type_id")
+    list_display = ("id", "username", "password", "email", "phone", "user_type_id", "ctime", "mtime", )
     list_filter = ("username", "password", "email", "phone", "user_type_id", )
     search_fields = ("username", "phone", "user_type_id__caption")
 

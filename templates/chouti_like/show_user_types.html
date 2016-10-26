@@ -1,0 +1,72 @@
+{% extends "chouti_like/index.html" %}
+
+<style>
+
+    div{
+
+    }
+
+</style>
+
+{% block css %}
+    .pager{
+        margin-top: 8px
+    }
+
+    .pager a{
+        background-color: grey;
+        padding: 5px;
+        margin: 1px;
+    }
+
+    .pager a.active{
+        background-color: blue;
+    }
+
+{% endblock %}
+
+
+{% block pg_main_content %}
+
+    <div name="data">
+        <table border="1px solid black">
+            <thead>
+                <tr>
+                    <td>id</td>
+                    <td>类型</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in ret_data %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.caption }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div name="pager" class="pager">
+
+        {% if pre_page %}
+            <a href="/chouti_like/show_user_types/?cur_page={{  pre_page  }} &cur_page_start={{ cur_page_start }}">[pre]</a>
+        {% endif %}
+
+        {% for page in cur_page_range %}
+            {% if page == cur_page %}
+                <a class="active" href="/chouti_like/show_user_types/?cur_page={{ page }}&cur_page_start={{ cur_page_start }}">{{ page }}</a>
+            {% else %}
+                <a href="/chouti_like/show_user_types/?cur_page={{ page }}&cur_page_start={{ cur_page_start }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if post_page %}
+            <a href="/chouti_like/show_user_types/?cur_page={{  post_page  }} &cur_page_start={{ cur_page_start }}">[post]</a>
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}
