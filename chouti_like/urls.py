@@ -21,6 +21,7 @@ urlpatterns = [
     url(r"session_register/", views.session_register, name="session_register"),
     url(r"index/", views.index, name="index"),
     url(r"show_user_types/", views.show_user_types, name="show_user_types"),
+    url(r"get_check_code/", views.get_check_code, name="get_check_code"),
 
 
 

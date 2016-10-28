@@ -6,14 +6,20 @@
     <style>
         .center_dialog{
             width:500px;
-            height: 300px;
+            height: 350px;
             position: fixed;
             top: 50%;
             left: 50%;
             margin-top: -250px;
             margin-left: -250px;
             background-color: antiquewhite;
+            //background-image: url("/statics/img/logo.png");
         }
+
+        .error_span{
+            color: red;
+        }
+
 
     </style>
 </head>
@@ -21,64 +27,144 @@
 
 <div class="center_dialog">
     <div style="margin: 20px;">
-        <form action="/chouti_like/session_register/" method="post">
+        <form action="/chouti_like/session_register/" method="post" id="register_form_id">
             <table>
                 <tr>
                     <td>用户名:</td>
                     <td>
-                        {{ form.username }}
-                        {% if form.errors.username %}
-                            {{ form.errors.username.0 }}
-                        {% endif %}
-                        {% if exist_flag %}
-                            <span>用户名已经存在</span>
-                        {% endif %}
+                        <input name="username" type="text">
                     </td>
                 </tr>
                 <tr>
                     <td>密码:</td>
                     <td>
-                        {{ form.password }}
-                        {% if form.errors.password %}
-                            {{ form.errors.password.0 }}
-                        {% endif %}
+                        <input name="password" type="password">
                     </td>
                 </tr>
                 <tr>
                     <td>email:</td>
                     <td>
-                        {{ form.email }}
-                        {% if form.errors.email %}
-                            {{ form.errors.email.0 }}
-                        {% endif %}
+                        <input name="email" type="text">
                     </td>
                 </tr>
                 <tr>
                     <td>phone:</td>
                     <td>
-                        {{ form.phone }}
-                        {% if form.errors.phone %}
-                            {{ form.errors.phone.0 }}
-                        {% endif %}
+                        <input name="phone" type="text">
                     </td>
                 </tr>
                 <tr>
                     <td>用户类型:</td>
                     <td>
-                        {{ form.user_type_id }}
-                        {% if form.errors.user_type_id %}
-                            {{ form.errors.user_type_id.0 }}
-                        {% endif %}
+                        <select name="user_type_id">
+                            {% for user_type in user_types %}
+                                <option value="{{ user_type.id }}">{{ user_type.caption }}</option>
+                            {% endfor %}
+                        </select>
                     </td>
                 </tr>
+
+                <tr>
+                    <td>大头贴:</td>
+                    <td>
+                        <input name="img" type="file" id="img">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <img id="img_show" src="/statics/img/avatar/github_header.jp" alt="大头贴预览区域" style="width: 100px;height: 100px">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <img src="/chouti_like/get_check_code/" onclick="getCheckCodeImage(this);">
+                    </td>
+                    <td>
+                        <input name="check_code" type="text">
+                    </td>
+                </tr>
+
             </table>
-            <input name="submit" type="submit" value=注册>
+            <input name="register" type="button" value="注册" onclick="ajaxRegister();">
         </form>
     </div>
 
 </div>
 
+    <script src="/statics/plugin/jquery.js"></script>
+    <script>
 
+
+        function getCheckCodeImage(ths) {
+            ths.src += "?";
+        }
+
+        function ajaxRegister() {
+            // clear errors messages
+            if($("#register_form_id").find("span")){
+                var spans = $("#register_form_id").find("span").remove();
+            }
+
+
+            var form = new FormData()
+            $("#register_form_id").find("input[type=text],input[type=password], select").each(function () {
+                //console.log($(this)[0])
+                //console.log($(this).attr("name"))
+                //console.log($(this).val())
+                form.append($(this).attr("name"), $(this).val());
+            });
+            img_obj = $("#img")[0].files[0];
+            form.append("img", img_obj);  // upload avatar pic
+
+            // 讲from的数据通过jauery版本的ajax传到服务器端
+            $.ajax({
+                type:"post",
+                url:"/chouti_like/session_register/",
+                data:form,
+                processData:false,  // do not process form data
+                contentType:false,  // do not set header
+                success:function (data) {
+                    // handle server return data
+
+
+
+                    console.log(data);
+                    data_obj = JSON.parse(data);
+                    //console.log(data_obj.messages.username[0].message)
+
+                    // show avatar pic
+                    if (data_obj.avatar){
+                        console.log(data_obj.avatar)
+                        $("#img_show").attr("src", data_obj.avatar);
+                    }
+
+                    if (data_obj.exist_flag){
+                        var error_span = document.createElement("span");
+                        error_span.innerText = "用户名已经存在";
+                        error_span.classList.add("error_span");
+                        $("#register_form_id").find("input[name=username]").after(error_span);
+                    }
+
+                    if(!data_obj.status){
+                        // handle error messages
+                        $.each(data_obj.messages, function (k,v) {
+                            var error_span = document.createElement("span");
+                            error_span.innerText = v[0].message;
+                            error_span.classList.add("error_span");
+                            $("#register_form_id").find("[name="+ k +"]").after(error_span);
+                        })
+                    }else {
+                        // register success
+                        window.location.href = "/chouti_like/index/";
+                    }
+
+                }
+
+            })
+        }
+    </script>
 
 </body>
 </html>

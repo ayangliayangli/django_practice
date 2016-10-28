@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>session register</title>
+    <style>
+        .center_dialog{
+            width:500px;
+            height: 300px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -250px;
+            background-color: antiquewhite;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="center_dialog">
+    <div style="margin: 20px;">
+        <form action="/chouti_like/session_register/" method="post">
+            <table>
+                <tr>
+                    <td>用户名:</td>
+                    <td>
+                        {{ form.username }}
+                        {% if form.errors.username %}
+                            {{ form.errors.username.0 }}
+                        {% endif %}
+                        {% if exist_flag %}
+                            <span>用户名已经存在</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>密码:</td>
+                    <td>
+                        {{ form.password }}
+                        {% if form.errors.password %}
+                            {{ form.errors.password.0 }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>email:</td>
+                    <td>
+                        {{ form.email }}
+                        {% if form.errors.email %}
+                            {{ form.errors.email.0 }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>phone:</td>
+                    <td>
+                        {{ form.phone }}
+                        {% if form.errors.phone %}
+                            {{ form.errors.phone.0 }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>用户类型:</td>
+                    <td>
+                        {{ form.user_type_id }}
+                        {% if form.errors.user_type_id %}
+                            {{ form.errors.user_type_id.0 }}
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <input name="submit" type="submit" value=注册>
+        </form>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>

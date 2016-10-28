@@ -3,21 +3,30 @@ from django.core.exceptions import ValidationError
 from chouti_like import models
 from django import forms
 from lib import pager
+import json,os
 
 # Create your views here.
+
+
+def phone_validator(phone):
+    import re
+    ret = re.findall(r"1[3587]\d{9}", str(phone))
+    if not ret:
+        raise ValidationError("手机号格式不正确")
 
 
 class SessionRegisterForm(forms.Form):
     user_type_choices = models.UserType.objects.all().values_list("id", "caption")
 
-    username = forms.CharField(max_length=16)
+    username = forms.CharField(max_length=16, error_messages={"required":"用户名必须填写"})
     password = forms.CharField(max_length=16)
-    phone = forms.IntegerField()
-    email = forms.EmailField()
+    phone = forms.IntegerField(validators=[phone_validator, ])
+    email = forms.EmailField(error_messages={"invalid":"请正确填写邮箱格式"})
     user_type_id = forms.IntegerField(widget=forms.Select(choices=user_type_choices))
 
     def __init__(self, *args, **kwargs):
         # 解决新增了用户类型字段,没有及时显示的bug
+        # 后来自己写的前端,在view中获取所有的usertype, 不存在这个问题了, 这里留着以后备用
         super(SessionRegisterForm, self).__init__(*args, **kwargs)
         self.fields["user_type_id"].widget.choices=models.UserType.objects.all().values_list("id", "caption")
 
@@ -72,10 +81,28 @@ def session_logout(request):
 
 def session_register(request):
     if request.method == "GET":
-        form_get = SessionRegisterForm()
-        return render(request, "chouti_like/session_register.html", {"form":form_get})
+        user_type_all_list = models.UserType.objects.all()
+        return render(request, "chouti_like/session_register.html", {"user_types":user_type_all_list})
     else:
         # post 提交数据
+
+        # handle avatar pic first
+        upload_file_obj = request.FILES.get("img")
+        if upload_file_obj:
+            # 当传了大头贴过来的时候才处理
+            upload_file_path_name = os.path.join("statics", "img", "avatar", upload_file_obj.name)
+            with open(upload_file_path_name, "wb") as fp:
+                for chunk in upload_file_obj.chunks():
+                    fp.write(chunk)
+
+        # handle check_code
+        if request.session.get("check_code").upper() != request.POST.get("check_code").upper():
+            ret_data_dic = {}
+            ret_data_dic["status"] = False
+            messages = {"check_code":[{"message":"验证码不正确"}]}
+            ret_data_dic["messages"] = messages
+            return HttpResponse(json.dumps(ret_data_dic))
+
         form_post = SessionRegisterForm(request.POST)
         form_auth_flag = form_post.is_valid()
         if form_auth_flag:
@@ -86,7 +113,11 @@ def session_register(request):
             if is_user_exist:
                 # user is exist
                 exist_flag = True
-                return render(request, "chouti_like/session_register.html", {"form": form_post, "exist_flag":exist_flag})
+                ret_data_dic = {}
+                ret_data_dic["exist_flag"] = exist_flag
+                if upload_file_obj:
+                    ret_data_dic["avatar"] = "/" + upload_file_path_name
+                return HttpResponse(json.dumps(ret_data_dic))
             else:
                 # user is not exist
                 # create a user
@@ -106,10 +137,23 @@ def session_register(request):
                 # add session
                 request.session["username"] = clean_data.get("username")
 
-                return HttpResponseRedirect("/chouti_like/index/")
+                ret_data_dic = {}
+                ret_data_dic["status"] = True
+                return HttpResponse(json.dumps(ret_data_dic))
         else:
             # form验证失败
-            return render(request, "chouti_like/session_register.html", {"form": form_post})
+            res_post_dict = {}
+
+            form_errors_dict = json.loads(form_post.errors.as_json(), encoding="utf-8")
+            print("---for_auth_result:", type(form_errors_dict), form_errors_dict)
+            res_post_dict["status"] = form_auth_flag
+            res_post_dict["messages"] = form_errors_dict
+
+            if upload_file_obj:
+                res_post_dict["avatar"] = "/" + upload_file_path_name
+
+            return HttpResponse(json.dumps(res_post_dict))
+
 
 
 def index(request):
@@ -160,6 +204,20 @@ def show_user_types(request):
                                                                 "cur_page_start":cur_page_start,
                                                                 "cur_page_stop":cur_page_stop,
                                                                 })
+
+
+def get_check_code(request):
+    import io
+    from lib import check_code
+    stream = io.BytesIO()
+    img, code = check_code.create_validate_code()
+    img.save(stream, "png")
+
+    # set check code in session "check_code"
+    request.session["check_code"] = code
+    # return string , but it is a pic file, browser can show it in img tag
+    return HttpResponse(stream.getvalue())
+
 
 
 
