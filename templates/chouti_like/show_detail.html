@@ -1,0 +1,198 @@
+{% extends "chouti_like/index.html" %}
+
+<style>
+
+    div{
+
+    }
+
+</style>
+
+{% block css %}
+    .pager{
+        margin-top: 8px
+    }
+
+    .pager a{
+        background-color: grey;
+        padding: 5px;
+        margin: 1px;
+    }
+
+    .pager a.active{
+        background-color: blue;
+    }
+
+{% endblock %}
+
+
+{% block pg_main_content %}
+
+    <form action="/chouti_like/detail/" method="post">
+        <div name="data">
+            <table border="1px solid black">
+                <thead>
+                    <tr>
+                        <td>项目</td>
+                        <td>内容</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>
+                            {{ user.id }}
+                            <input name="id" value="{{ user.id }}" hidden="hidden">
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>用户名</td>
+                        <td>{{ user.username }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>密码</td>
+                        <td><input name="password" type="text" value="{{ user.password }}"></td>
+                    </tr>
+
+                    <tr>
+                        <td>电话</td>
+                        <td><input name="phone" type="text" value="{{ user.phone }}"></td>
+                    </tr>
+
+                    <tr>
+                        <td>邮箱</td>
+                        <td><input name="email" type="text" value="{{ user.email }}"></td>
+                    </tr>
+
+                    <tr>
+                        <td>创建时间</td>
+                        <td>{{ user.ctime }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>修改时间</td>
+                        <td>{{ user.mtime }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>用户类型</td>
+
+                        <td>
+                            <select name="user_type_id">
+                                {% for user_type in user_types %}
+                                    {% if user.user_type_id == user_type %}
+                                        <option value={{ user_type.id }} selected="selected">{{ user_type.caption }}</option>
+                                    {% else %}
+                                        <option value={{ user_type.id }}>{{ user_type.caption }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+
+
+                    </tr>
+
+                    <tr>
+                        <td>爱好</td>
+                        <td>
+                            <span>该功能在模仿admin的时候开发</span>
+                            <select name="hobbys" multiple="multiple" disabled="disabled" id="hobby_select">
+                                {% for hobby in all_hobbys %}
+                                    {% if hobby in hobbys %}
+                                        <option value="{{ hobby.id }}" selected="selected">{{ hobby.title }}</option>
+                                    {% else %}
+                                        <option value="{{ hobby.id }}">{{ hobby.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <a href="javascript:void(0)" onclick="deleteThisHobby(this)">编辑</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>操作</td>
+                        <td><input type="submit" value="修改"></td>
+                    </tr>
+
+                    {% if status %}
+                        <tr>
+                            <td colspan="2">
+                                <span style="color: red">{{ message }}</span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+
+
+
+    <div name="pager" class="pager">
+
+        {% if pre_page %}
+            <a href="/chouti_like/show_user_types/?cur_page={{  pre_page  }} &cur_page_start={{ cur_page_start }}">[pre]</a>
+        {% endif %}
+
+        {% for page in cur_page_range %}
+            {% if page == cur_page %}
+                <a class="active" href="/chouti_like/show_user_types/?cur_page={{ page }}&cur_page_start={{ cur_page_start }}">{{ page }}</a>
+            {% else %}
+                <a href="/chouti_like/show_user_types/?cur_page={{ page }}&cur_page_start={{ cur_page_start }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+
+        {% if post_page %}
+            <a href="/chouti_like/show_user_types/?cur_page={{  post_page  }} &cur_page_start={{ cur_page_start }}">[post]</a>
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block js %}
+    <script>
+
+        function deleteThisHobby(ths) {
+            //console.log(ths);
+            //console.log(hobby_id);
+            $(ths).prev().attr("disabled", false)
+            var tag_a = document.createElement("a");
+            tag_a.innerText = "提交确认";
+            tag_a.href = "javascript:void(0)";
+            $(tag_a).attr("onclick", "uploadModifiedHobby();")
+            $(ths).after(tag_a)
+
+
+            $(ths).remove()
+
+
+
+        }
+
+        function uploadModifiedHobby(ths) {
+            var hobbys = $("#hobby_select").val();
+            hobbys_str = JSON.stringify(hobbys)
+            console.log(hobbys_str)
+            $.ajax({
+                type:"POST",
+                url:"/chouti_like/delete_this_hobby/",
+                data:{"hobbys":hobbys_str,},
+                success:function (data) {
+                    location.href = "/chouti_like/show_my_info/"
+                }
+            })
+        }
+
+    </script>
+{% endblock %}

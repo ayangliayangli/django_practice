@@ -1,6 +1,7 @@
 # 总提说明
 
-[chouti_like](doc/chouti_like/readme.md)
+        通过前台操作数据库:
+            /doc/chouti_like/readme.md
 
 
 

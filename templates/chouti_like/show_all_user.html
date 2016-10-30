@@ -1,0 +1,126 @@
+{% extends "chouti_like/index.html" %}
+
+<style>
+
+    div{
+
+    }
+
+</style>
+
+{% block css %}
+    .pager{
+        margin-top: 8px
+    }
+
+    .pager a{
+        background-color: grey;
+        padding: 5px;
+        margin: 1px;
+    }
+
+    .pager a.active{
+        background-color: blue;
+    }
+
+{% endblock %}
+
+
+{% block pg_main_content %}
+    <div><a href="/chouti_like/session_register/">新增用户</a></div>
+    <hr/>
+    <div name="data">
+        <table border="1px solid black">
+            <thead>
+                <tr>
+                    <td>id</td>
+                    <td>用户名</td>
+                    <td>密码</td>
+                    <td>电话</td>
+                    <td>邮箱</td>
+                    <td>创建时间</td>
+                    <td>修改时间</td>
+                    <td>用户类型</td>
+                    <td>爱好</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><a href="/chouti_like/detail/?user_id={{ user.id }}">{{ user.id }}</a></td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.ctime }}</td>
+                    <td>{{ user.mtime }}</td>
+                    <td>{{ user.user_type_id }}</td>
+                    <td>爱好 在模仿admin的时候再完善</td>
+                    <td><a href="javascript:void(0)" onclick="deleteCurUser(this, {{ user.id }})">删除</a></td>
+                </tr>
+            {% endfor %}
+
+
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+    <div name="pager" class="pager">
+
+        {% if pre_page %}
+            <a href="/chouti_like/show_user_types/?cur_page={{  pre_page  }} &cur_page_start={{ cur_page_start }}">[pre]</a>
+        {% endif %}
+
+        {% for page in cur_page_range %}
+            {% if page == cur_page %}
+                <a class="active" href="/chouti_like/show_user_types/?cur_page={{ page }}&cur_page_start={{ cur_page_start }}">{{ page }}</a>
+            {% else %}
+                <a href="/chouti_like/show_user_types/?cur_page={{ page }}&cur_page_start={{ cur_page_start }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+
+        {% if post_page %}
+            <a href="/chouti_like/show_user_types/?cur_page={{  post_page  }} &cur_page_start={{ cur_page_start }}">[post]</a>
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block js %}
+    <script>
+
+        function deleteCurUser(ths, user_id) {
+            $.ajax({
+                type:"POST",
+                url:"/chouti_like/delete_cur_user/",
+                data:{"user_id":user_id},
+                success:function (data) {
+                    data_obj = JSON.parse(data)
+                    if (data_obj.status){
+                        // server delete success
+                        $(ths).parent().parent().remove()
+                        console.log("delete success")
+                    }else {
+                        console.log("delete failure")
+                    }
+                }
+            })
+        }
+
+
+
+    </script>
+{% endblock %}

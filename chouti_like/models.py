@@ -10,6 +10,16 @@ class UserType(models.Model):
         s = self.caption
         return s
 
+
+class Hobby(models.Model):
+    title = models.CharField(max_length=64)
+    desc = models.TextField()
+
+    def __str__(self):
+        s = self.title
+        return s
+
+
 class UserInfo(models.Model):
     username = models.CharField(max_length=16)
     password = models.CharField(max_length=16)
@@ -18,9 +28,11 @@ class UserInfo(models.Model):
     ctime = models.DateField(auto_now_add=True)  # create time
     mtime = models.DateField(auto_now=True)  # modified time
 
-    user_type_id = models.ForeignKey(UserType)  # foreign key
+    user_type_id = models.ForeignKey(UserType, null=True, blank=True)  # foreign key
+    hobby = models.ManyToManyField(Hobby, null=True, blank=True)  # manytomany key
 
     def __str__(self):
         s = self.username + "---" + self.password
         return s
+
 

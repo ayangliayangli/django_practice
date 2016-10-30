@@ -206,6 +206,32 @@ def show_user_types(request):
                                                                 })
 
 
+def show_my_info(request):
+    username = request.session.get("username", None)
+    my_info = models.UserInfo.objects.filter(username=username).first()
+
+    hobbys = my_info.hobby.all()
+    all_hobbys = models.Hobby.objects.all()
+    print("---debug:", type(hobbys),"+++", hobbys)
+
+    data_to_tpl = {"my_info":my_info,"hobbys":hobbys, "all_hobbys":all_hobbys, "username":username }
+    return render(request, "chouti_like/show_my_info.html", data_to_tpl)
+
+
+def delete_this_hobby(request):
+    username = request.session.get("username")
+    hobbys = request.POST.get("hobbys", None)
+    hobbys_list = json.loads(hobbys)
+    print("---hobbys type:", type(hobbys_list), "+++", hobbys_list)
+    ret_data_dict = {"status":False}
+    if hobbys:
+        user_obj = models.UserInfo.objects.get(username=username)
+        user_obj.hobby.clear()
+        user_obj.hobby.add(*hobbys_list)
+        ret_data_dict["status"] = True
+        return HttpResponse(json.dumps(ret_data_dict))
+
+
 def get_check_code(request):
     import io
     from lib import check_code
@@ -228,3 +254,68 @@ def add_user_type(request):
     for i in range(50):
         models.UserType.objects.create(caption="CCO_" + str(i))
     return HttpResponse("ok")
+
+
+# admin-like object
+def show_all_user(request):
+    data_to_tpl = {}
+    username = request.session.get("username", None)
+    data_to_tpl["username"] = username
+
+    all_user = models.UserInfo.objects.all()
+    data_to_tpl["users"] = all_user
+
+    yangli_obj = models.UserInfo.objects.get(username="yangli")
+    print(type(yangli_obj.user_type_id), yangli_obj.user_type_id)
+
+    return render(request, "chouti_like/show_all_user.html", data_to_tpl)
+
+
+def delete_cur_user(request):
+    ret_data_dict = {}
+    ret_data_dict["status"] = False
+
+    if request.method == "POST":
+        user_id = request.POST.get("user_id", None)
+        models.UserInfo.objects.get(pk=user_id).delete()
+        ret_data_dict["status"] = True
+
+    return HttpResponse(json.dumps(ret_data_dict))
+
+
+def detail(request):
+    data_to_tpl = {}
+    data_to_tpl["username"] = request.session.get("username", None)
+
+    user_types = models.UserType.objects.all()
+    data_to_tpl["user_types"] = user_types
+
+    if request.method == "GET":
+        user_id = request.GET.get("user_id")
+        user_obj = models.UserInfo.objects.get(pk=user_id)
+        data_to_tpl["user"] = user_obj
+    else:
+        user_id = request.POST.get("id", None)
+        # print(type(request.POST.values()), request.POST.values())
+
+        to_update_dict = {}
+        to_update_dict["password"] = request.POST.get("password")
+        to_update_dict["phone"] = request.POST.get("phone")
+        to_update_dict["email"] = request.POST.get("email")
+        to_update_dict["user_type_id"] = request.POST.get("user_type_id")
+        print(to_update_dict)
+
+        # update
+        models.UserInfo.objects.filter(pk=user_id).update(**to_update_dict)
+        # return real data
+        user_obj = models.UserInfo.objects.get(pk=user_id)
+        data_to_tpl["user"] = user_obj
+        data_to_tpl["status"] = True
+        data_to_tpl["message"] = "更新成功"
+
+    user_types = models.UserType.objects.all()
+    data_to_tpl["user_types"] = user_types
+
+    return render(request, "chouti_like/show_detail.html", data_to_tpl)
+
+
