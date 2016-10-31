@@ -290,11 +290,23 @@ def detail(request):
     user_types = models.UserType.objects.all()
     data_to_tpl["user_types"] = user_types
 
+    all_hobbys = models.Hobby.objects.all()
+    data_to_tpl["all_hobbys"] = all_hobbys
+
+    user_types = models.UserType.objects.all()
+    data_to_tpl["user_types"] = user_types
+
     if request.method == "GET":
         user_id = request.GET.get("user_id")
         user_obj = models.UserInfo.objects.get(pk=user_id)
         data_to_tpl["user"] = user_obj
+
+        my_hobbys = user_obj.hobby.all()
+        data_to_tpl["my_hobbys"] = my_hobbys
+
     else:
+        # POST
+
         user_id = request.POST.get("id", None)
         # print(type(request.POST.values()), request.POST.values())
 
@@ -303,19 +315,25 @@ def detail(request):
         to_update_dict["phone"] = request.POST.get("phone")
         to_update_dict["email"] = request.POST.get("email")
         to_update_dict["user_type_id"] = request.POST.get("user_type_id")
-        print(to_update_dict)
+        front_hobbys = list(request.POST.getlist("hobbys"))
+        print("---front_hobbys:", front_hobbys)
+        print("---to_update_dict", to_update_dict)
 
         # update
         models.UserInfo.objects.filter(pk=user_id).update(**to_update_dict)
-        # return real data
         user_obj = models.UserInfo.objects.get(pk=user_id)
+        user_obj.hobby.clear()
+        user_obj.hobby.add(*front_hobbys)
+        user_obj.save()  # save to databases
+
+        # return real data
         data_to_tpl["user"] = user_obj
+        data_to_tpl["my_hobbys"] = user_obj.hobby.all()
         data_to_tpl["status"] = True
         data_to_tpl["message"] = "更新成功"
 
-    user_types = models.UserType.objects.all()
-    data_to_tpl["user_types"] = user_types
 
+    print("---user hobbys:", data_to_tpl["user"].hobby.all())
     return render(request, "chouti_like/show_detail.html", data_to_tpl)
 
 

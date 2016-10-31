@@ -28,7 +28,7 @@
 
 {% block pg_main_content %}
 
-    <form action="/chouti_like/detail/" method="post">
+    <form action="/chouti_like/detail/?user_id={{ user.id }}" method="post">
         <div name="data">
             <table border="1px solid black">
                 <thead>
@@ -99,10 +99,10 @@
                     <tr>
                         <td>爱好</td>
                         <td>
-                            <span>该功能在模仿admin的时候开发</span>
+{#                            <span>该功能在模仿admin的时候开发</span>#}
                             <select name="hobbys" multiple="multiple" disabled="disabled" id="hobby_select">
                                 {% for hobby in all_hobbys %}
-                                    {% if hobby in hobbys %}
+                                    {% if hobby in my_hobbys %}
                                         <option value="{{ hobby.id }}" selected="selected">{{ hobby.title }}</option>
                                     {% else %}
                                         <option value="{{ hobby.id }}">{{ hobby.title }}</option>
@@ -167,31 +167,7 @@
             //console.log(ths);
             //console.log(hobby_id);
             $(ths).prev().attr("disabled", false)
-            var tag_a = document.createElement("a");
-            tag_a.innerText = "提交确认";
-            tag_a.href = "javascript:void(0)";
-            $(tag_a).attr("onclick", "uploadModifiedHobby();")
-            $(ths).after(tag_a)
-
-
             $(ths).remove()
-
-
-
-        }
-
-        function uploadModifiedHobby(ths) {
-            var hobbys = $("#hobby_select").val();
-            hobbys_str = JSON.stringify(hobbys)
-            console.log(hobbys_str)
-            $.ajax({
-                type:"POST",
-                url:"/chouti_like/delete_this_hobby/",
-                data:{"hobbys":hobbys_str,},
-                success:function (data) {
-                    location.href = "/chouti_like/show_my_info/"
-                }
-            })
         }
 
     </script>
