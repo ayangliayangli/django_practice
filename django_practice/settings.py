@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jd_like',
     'chouti_like',
+    'guanyin',
 ]
 
 MIDDLEWARE_CLASSES = [
