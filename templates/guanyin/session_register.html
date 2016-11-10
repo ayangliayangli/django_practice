@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>session register</title>
+    <style>
+        .center_dialog{
+            width:500px;
+            height: 350px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -250px;
+            background-color: antiquewhite;
+            z-index: 500;
+        }
+
+        .center_dialog_top{
+            width:300px;
+            height: 300px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -0px;
+            margin-left: -150px;
+            background-color: bisque;
+            z-index: 1500;
+        }
+
+        .shadow{
+            position: fixed;
+            left: 0;
+            right:0;
+            top: 0;
+            bottom:0;
+            background-color: gray;
+            z-index: 1000;
+            opacity: 0.7;
+        }
+
+        .hidden{
+            display: none;
+        }
+
+        .error_span{
+            color: red;
+        }
+
+
+    </style>
+</head>
+<body style="background-image: url(/statics/img/wg1.jpg);">
+
+<div class="center_dialog">
+    <div style="margin: 20px;">
+        <form action="{% url 'guanyin:session_register' %}" method="post" id="register_form_id">
+            <table>
+                <tr>
+                    <td>用户名:</td>
+                    <td>
+                        <input name="username" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>密码:</td>
+                    <td>
+                        <input name="password" type="password">
+                    </td>
+                </tr>
+                <tr>
+                    <td>email:</td>
+                    <td>
+                        <input name="email" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>phone:</td>
+                    <td>
+                        <input name="phone" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>用户属组:</td>
+                    <td>
+                        <select name="user_group">
+                            {% for user_group in all_user_groups %}
+                                <option value="{{ user_group.id }}">{{ user_group.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>头像:</td>
+                    <td>
+                        <input name="img" type="file" id="img">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <img id="img_show" src="{{ avatar }}" alt="大头贴预览区域" style="width: 100px;height: 100px">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <img src={% url "guanyin:get_check_code" %} onclick="getCheckCodeImage(this);">
+                    </td>
+                    <td>
+                        <input name="check_code" type="text">
+                    </td>
+                </tr>
+
+            </table>
+            <input name="register" type="button" value="注册" onclick="ajaxRegister();">
+            <input name="register" type="button" value="模拟注册成功" onclick="fakeRegisterSuccess();">
+        </form>
+    </div>
+
+</div>
+
+
+<div class="shadow hidden" id="shadow_layer">
+        <center><img src="/statics/img/avatar/github_header.jpg" ></center>
+</div>
+
+
+<div class="center_dialog_top hidden " id="ack_layer">
+
+    <div style="margin: 10px;">
+        <a href="{% url 'guanyin:session_login' %}">现在去登录吧</a>
+    </div>
+
+</div>
+
+
+
+    <script src="/statics/plugin/jquery.js"></script>
+    <script>
+
+
+        function getCheckCodeImage(ths) {
+            ths.src += "?";
+        }
+
+        function ajaxRegister() {
+            // clear errors messages
+            if($("#register_form_id").find("span")){
+                var spans = $("#register_form_id").find("span").remove();
+            }
+
+
+            var form = new FormData()
+            $("#register_form_id").find("input[type=text],input[type=password], select").each(function () {
+                //console.log($(this)[0])
+                //console.log($(this).attr("name"))
+                //console.log($(this).val())
+                form.append($(this).attr("name"), $(this).val());
+            });
+            img_obj = $("#img")[0].files[0];
+            form.append("img", img_obj);  // upload avatar pic
+
+            // 讲from的数据通过jauery版本的ajax传到服务器端
+            $.ajax({
+                type:"post",
+                url:"{% url 'guanyin:session_register' %}",
+                data:form,
+                processData:false,  // do not process form data
+                contentType:false,  // do not set header
+                success:function (data) {
+                    // handle server return data
+
+
+
+                    console.log(data);
+                    data_obj = JSON.parse(data);
+                    //console.log(data_obj.messages.username[0].message)
+
+                    // show avatar pic
+                    if (data_obj.avatar){
+                        console.log(data_obj.avatar)
+                        $("#img_show").attr("src", data_obj.avatar);
+                    }
+
+                    if (data_obj.exist_flag){
+                        var error_span = document.createElement("span");
+                        error_span.innerText = "用户名已经存在";
+                        error_span.classList.add("error_span");
+                        $("#register_form_id").find("input[name=username]").after(error_span);
+                    }
+
+                    if(!data_obj.status){
+                        // handle error messages
+                        $.each(data_obj.messages, function (k,v) {
+                            var error_span = document.createElement("span");
+                            error_span.innerText = v[0].message;
+                            error_span.classList.add("error_span");
+                            $("#register_form_id").find("[name="+ k +"]").after(error_span);
+                        })
+                    }else {
+                        // register success
+                        //window.location.href = "{% url 'guanyin:index' %}";
+                        $("#shadow_layer").removeClass("hidden")
+                        $("#ack_layer").removeClass("hidden")
+                        $("#shadow_layer img").attr("src", data_obj.avatar)
+                    }
+
+                }
+
+            })
+        }
+
+        function fakeRegisterSuccess() {
+            $("#shadow_layer").removeClass("hidden")
+            $("#ack_layer").removeClass("hidden")
+            $("#shadow_layer img").attr("src", "/statics/img/avatar/github_header.jpg")
+
+        }
+
+    </script>
+
+</body>
+</html>

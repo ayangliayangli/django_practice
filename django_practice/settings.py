@@ -129,3 +129,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "statics"),
 )
 
+HOST_KEY_DIR = os.path.join("statics", "host_key")
+

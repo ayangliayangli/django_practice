@@ -1,7 +1,110 @@
 {% extends "guanyin/base.html" %}
 
+
 {% block title %}
-guanyin HAS
+    guanyin HAS
+{% endblock %}
+
+
+
+{% block page_h1_header %}
+    <span>我的资产</span>
+{% endblock %}
+
+
+
+{% block page_h2_header %}
+    <span>主机列表</span>
+{% endblock %}
+
+
+
+{% block page_content %}
+    <div>
+        <button type="button" class="btn btn-primary" onclick="addHost();">添加主机</button>
+
+        <p></p>
+    </div>
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>实例名</td>
+                    <td>主机名</td>
+                    <td>端口</td>
+                    <td>用户名</td>
+                    <td>密码</td>
+                    <td>私钥路径</td>
+                    <td>属组</td>
+                    <td>动作</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for host in hosts %}
+                    <tr>
+                        <td>{{ host.hostname }}</td>
+                        <td>{{ host.ip }}</td>
+                        <td>{{ host.port }}</td>
+                        <td>{{ host.host_user_name }}</td>
+                        <td>{{ host.host_password }}</td>
+                        <td>{{ host.host_key_path }}</td>
+                        <td>{{ host.host_group.name }}</td>
+                        <td><button type="button" class="btn btn-danger" onclick="delHostRelationship(this, {{ host.id }});">删除</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if pager.pre_page %}
+            <a href="{% url 'guanyin:index' %}?cur_page={{ pager.pre_page }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-primary">上一页</button></a>
+        {% endif %}
+
+        {% for i in pager.cur_page_range %}
+            {% if pager.cur_page == i %}
+                <a href="{% url 'guanyin:index' %}?cur_page={{ i }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-success">{{ i }}</button></a>
+            {% else %}
+                <a href="{% url 'guanyin:index' %}?cur_page={{ i }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-info">{{ i }}</button></a>
+            {% endif %}
+        {% endfor %}
+
+        {% if pager.post_page %}
+            <a href="{% url 'guanyin:index' %}?cur_page={{ pager.post_page }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-primary">下一页</button></a>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+
+
+
+{% block js %}
+    <script>
+        function delHostRelationship(ths, host_id) {
+            console.log(ths, host_id)
+
+            $.ajax({
+                url:"{% url 'guanyin:del_host_relationship_via_hostid' %}",
+                type:"post",
+                data:{"host_id":host_id},
+                success:function (data) {
+                    data_obj = JSON.parse(data)
+                    console.log(data_obj)
+
+                    if(data_obj["status"]){
+                        location.href = "{% url 'guanyin:index' %}"
+                    }
+
+                }
+            })
+
+        }
+
+        function addHost() {
+            location.href = "{% url 'guanyin:add_host' %}"
+        }
+
+
+    </script>
 {% endblock %}
 
 

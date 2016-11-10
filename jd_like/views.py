@@ -73,3 +73,7 @@ def jd_main_page(request):
 
 def index(request):
     return render(request, "jd_like/index.html");
+
+
+def project_index(request):
+    return render(request, "jd_like/project_index.html")

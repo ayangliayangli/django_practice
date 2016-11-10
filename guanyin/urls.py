@@ -17,7 +17,12 @@ from . import views
 
 urlpatterns = [
     url(r"index/", views.index, name="index"),
-
-
+    url(r"session_register/", views.session_register, name="session_register"),
+    url(r"session_login/", views.session_login, name="session_login"),
+    url(r"logout/", views.logout, name="logout"),
+    url(r"get_check_code/", views.get_check_code, name="get_check_code"),
+    url(r"del_host_relationship_via_hostid/", views.del_host_relationship_via_hostid, name="del_host_relationship_via_hostid"),
+    url(r"add_host/", views.add_host, name="add_host"),
+    # url(r"main/", views.main, name="main"),
 
 ]

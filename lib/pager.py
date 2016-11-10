@@ -61,12 +61,29 @@ def get_pager(item_total, item_per_page=10, cur_page=1, cur_page_start=1, cur_pa
     if cur_page_stop > page_total:
         cur_page_stop = page_total
 
-    ret_data_dict["start"] = start
-    ret_data_dict["end"] = end
-    ret_data_dict["cur_page"] = cur_page
-    ret_data_dict["cur_page_start"] = cur_page_start
-    ret_data_dict["cur_page_stop"] = cur_page_stop
-    ret_data_dict["page_total"] = page_total
+    cur_page_range = range(cur_page_start, cur_page_stop + 1)
+    pre_page = cur_page_start - 1
+    post_page = cur_page_stop + 1
+    # 修正上一页,下一页
+    if pre_page < 1:
+        pre_page = None
+    if post_page > page_total:
+        post_page = None
+
+    ret_data_dict["start"] = start  # 切片开始
+    ret_data_dict["end"] = end  # 切片借宿
+    ret_data_dict["cur_page"] = cur_page  # 当前页面
+    ret_data_dict["cur_page_start"] = cur_page_start  # 显示页开始
+    ret_data_dict["cur_page_stop"] = cur_page_stop  # 显示页结束
+    ret_data_dict["page_total"] = page_total  # 总页数
+    ret_data_dict["cur_page_range"] = cur_page_range  # 当前显示页范围
+    ret_data_dict["pre_page"] = pre_page  # 上一页
+    ret_data_dict["post_page"] = post_page  # 下一页
+
+    # handle special env which data is null
+    if page_total == 0:
+        ret_data_dict["cur_page_range"] = None
+        ret_data_dict["start"] = 0
 
     return ret_data_dict
 

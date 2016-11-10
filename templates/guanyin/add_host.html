@@ -1,0 +1,148 @@
+{% extends "guanyin/base.html" %}
+
+
+{% block title %}
+    add host
+{% endblock %}
+
+{% block style %}
+    .error_span{
+        color: red;
+    }
+{% endblock %}
+
+
+{% block page_h1_header %}
+    <span>添加主机</span>
+{% endblock %}
+
+
+
+{% block page_h2_header %}
+    <span>详细信息</span>
+{% endblock %}
+
+
+
+{% block page_content %}
+
+    <form class="form-horizontal" role="form">
+
+      <div class="form-group">
+        <label for="hostname" class="col-sm-2 control-label">实例名</label>
+        <div class="col-sm-3">
+          <input name="hostname" type="text" class="form-control" id="hostname" placeholder="hostname">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ip" class="col-sm-2 control-label">ip</label>
+        <div class="col-sm-3">
+          <input name="ip" type="text" class="form-control" id="ip" placeholder="ip">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="port" class="col-sm-2 control-label">port</label>
+        <div class="col-sm-3">
+          <input name="port" type="text" class="form-control" id="port" placeholder="port">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="host_user_name" class="col-sm-2 control-label">host_user_name</label>
+        <div class="col-sm-3">
+          <input name="host_user_name" type="text" class="form-control" id="host_user_name" placeholder="host_user_name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="host_password" class="col-sm-2 control-label">host_password</label>
+        <div class="col-sm-3">
+          <input name="host_password" type="text" class="form-control" id="host_password" placeholder="host_password">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="host_password" class="col-sm-2 control-label">属组</label>
+        <div class="col-sm-3">
+            <select name="host_group" class="form-control">
+                {% for host_group in all_host_group %}
+                    <option value="{{ host_group.id }}">{{ host_group.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-3">
+              <label for="host_key_file">文件私钥</label>
+              <input type="file" id="host_key_path" name="host_key_path">
+              <p class="help-block">如果需要,你可以上传您的登录主机的私钥文件</p>
+          </div>
+      </div>
+
+
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="button" class="btn btn-default" onclick="addHost(this);">Sign in</button>
+        </div>
+      </div>
+    </form>
+
+{% endblock %}
+
+
+
+
+{% block js %}
+    <script>
+        function addHost(ths) {
+
+            // clear error span
+            $(".form-horizontal").find("span[class=error_span]").remove()
+
+            var form = new FormData();
+            $(".form-horizontal").find("input[type=text], select").each(function () {
+                console.log($(this).attr("name"), $(this).val());
+                form.append($(this).attr("name"), $(this).val());
+            })
+
+            // handle private key file
+            var key_file_dom = $(".form-horizontal").find("input[type=file]")[0];
+            form.append($(key_file_dom).attr("name"), key_file_dom.files[0]);
+
+            // ajax to backend
+            $.ajax({
+                url:"{% url 'guanyin:add_host' %}",
+                type:"post",
+                data:form,
+                processData:false,
+                contentType:false,
+                success:function (data) {
+                    var data_obj = JSON.parse(data);
+
+                    if(data_obj.status){
+                        console.log("add success")
+                        location.href = "{% url 'guanyin:index' %}"
+                    }else {
+                        $.each(data_obj.errors, function (k,v) {
+                            var error_span = document.createElement("span");
+                            error_span.classList.add("error_span")
+                            error_span.innerText = v[0].message
+                            $(".form-horizontal").find("input[name="+ k +"]").after(error_span)
+                        })
+
+                    }
+
+                }
+            })
+
+
+        }
+    </script>
+
+{% endblock %}
+
+
