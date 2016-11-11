@@ -26,6 +26,12 @@ class UserGroupAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
+class LogAdmin(admin.ModelAdmin):
+    list_display = ("id", "ctime", "user","content")
+    list_filter = ("user",)
+    search_fields = ("user",)
+
+
 class UserAdmin(admin.ModelAdmin):
     list_display = ("id", "username", "password", "user_group", "email", "phone", "avatar_path", )
     list_editable = ("user_group", )
@@ -36,3 +42,4 @@ admin.site.register(models.HostGroup, HostGroupAdmin)
 admin.site.register(models.Host, HostAdmin)
 admin.site.register(models.UserGroup, UserGroupAdmin)
 admin.site.register(models.User, UserAdmin)
+admin.site.register(models.Log, LogAdmin)

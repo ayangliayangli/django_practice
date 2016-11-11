@@ -36,3 +36,4 @@ class UserInfo(models.Model):
         return s
 
 
+

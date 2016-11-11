@@ -72,3 +72,17 @@ class User(models.Model):
     def __str__(self):
         s = self.username
         return s
+
+
+class Log(models.Model):
+    ctime = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User)
+    content = models.CharField(max_length=128)
+
+    class Meta():
+        verbose_name = "操作日志"
+        # unique_together = ()
+
+    def __str__(self):
+        s = "[{}] {}".format(self.user, self.content)
+        return s
