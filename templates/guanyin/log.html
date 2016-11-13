@@ -1,0 +1,72 @@
+{% extends "guanyin/base.html" %}
+
+
+{% block title %}
+    log
+{% endblock %}
+
+
+
+{% block page_h1_header %}
+    <span>操作日志</span>
+{% endblock %}
+
+
+
+{% block page_h2_header %}
+    <span>最近操作日志</span>
+{% endblock %}
+
+
+
+{% block page_content %}
+
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>用户</td>
+                    <td>时间</td>
+                    <td>命令</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.user }}</td>
+                        <td>{{ log.ctime }}</td>
+                        <td>{{ log.content }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if pager.pre_page %}
+            <a href="{% url 'guanyin:show_mylog' %}?cur_page={{ pager.pre_page }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-primary">上一页</button></a>
+        {% endif %}
+
+        {% for i in pager.cur_page_range %}
+            {% if pager.cur_page == i %}
+                <a href="{% url 'guanyin:show_mylog' %}?cur_page={{ i }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-success">{{ i }}</button></a>
+            {% else %}
+                <a href="{% url 'guanyin:show_mylog' %}?cur_page={{ i }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-info">{{ i }}</button></a>
+            {% endif %}
+        {% endfor %}
+
+        {% if pager.post_page %}
+            <a href="{% url 'guanyin:show_mylog' %}?cur_page={{ pager.post_page }}&cur_page_start={{ pager.cur_page_start }}"><button type="button" class="btn btn-primary">下一页</button></a>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+
+
+
+{% block js %}
+    <script>
+
+    </script>
+{% endblock %}
+
+

@@ -297,6 +297,49 @@ def session_login(request):
         return HttpResponse(json.dumps(data_to_front_dict))
 
 
+def show_mylog(request):
+    data_tpl_dict = {}
+    logined_username = request.session.get("username", None)
+    data_tpl_dict["username"] = logined_username
+    # logs = models.Log.objects.filter(user__username=logined_username)
+    # data_tpl_dict["logs"] = logs
+
+    item_total = models.Log.objects.filter(user__username=logined_username).count()
+    item_per_page = 6
+    cur_page = int(request.GET.get("cur_page", 1))
+    cur_page_start = int(request.GET.get("cur_page_start", 1))
+    cur_page_step = 3
+
+    res_pager_dict = pager.get_pager(item_total=item_total,
+                                     item_per_page=item_per_page,
+                                     cur_page=cur_page,
+                                     cur_page_start=cur_page_start,
+                                     cur_page_step=cur_page_step, )
+    data_tpl_dict["pager"] = res_pager_dict
+
+    # slice
+    start = res_pager_dict["start"]
+    end = res_pager_dict["end"]
+    logs = models.Log.objects.filter(user__username=logined_username)[start:end]
+    data_tpl_dict["logs"] = logs
+
+    return render(request, "guanyin/log.html", data_tpl_dict)
+
+
+def resume_yangli(request):
+    return render(request, "guanyin/resume_yangli.html")
+
+def my_center(request):
+    data_tpl_dict = {}
+    logined_username = request.session.get("username", None)
+    data_tpl_dict["username"] = logined_username
+    myinfo = models.User.objects.get(username=logined_username)
+    data_tpl_dict["myinfo"] = myinfo
+
+    print("---avatar_path:", myinfo.avatar_path)
+
+    return render(request, "guanyin/my_center.html", data_tpl_dict)
+
 
 def get_check_code(request):
     '''
@@ -313,3 +356,5 @@ def get_check_code(request):
     request.session["check_code"] = code
     # return string , but it is a pic file, browser can show it in img tag
     return HttpResponse(stream.getvalue())
+
+

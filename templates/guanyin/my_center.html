@@ -1,0 +1,94 @@
+{% extends "guanyin/base.html" %}
+
+
+{% block title %}
+    my center
+{% endblock %}
+
+
+
+{% block page_h1_header %}
+    <span>个人中心</span>
+{% endblock %}
+
+
+
+{% block page_h2_header %}
+    <span>个人详细信息</span>
+{% endblock %}
+
+
+
+{% block page_content %}
+
+    <div >
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>用户名</td>
+                    <td>{{ myinfo.username }}</td>
+                    <td>  </td>
+                </tr>
+                <tr>
+                    <td>email</td>
+                    <td>{{ myinfo.email }}</td>
+                    <td>  </td>
+                </tr>
+                <tr>
+                    <td>phone</td>
+                    <td>{{ myinfo.phone }}</td>
+                    <td>  </td>
+                </tr>
+                <tr>
+                    <td>头像</td>
+                    <td><img src="{{ myinfo.avatar_path }}" style="height: 500px"></td>
+                    <td>  </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}
+
+
+
+
+{% block js %}
+    <script>
+        function delHostRelationship(ths, host_id) {
+            console.log(ths, host_id)
+
+            $.ajax({
+                url:"{% url 'guanyin:del_host_relationship_via_hostid' %}",
+                type:"post",
+                data:{"host_id":host_id},
+                success:function (data) {
+                    data_obj = JSON.parse(data)
+                    console.log(data_obj)
+
+                    if(data_obj["status"]){
+                        location.href = "{% url 'guanyin:index' %}"
+                    }
+
+                }
+            })
+
+        }
+
+        function addHost() {
+            location.href = "{% url 'guanyin:add_host' %}"
+        }
+
+
+    </script>
+{% endblock %}
+
+
