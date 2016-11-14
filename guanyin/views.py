@@ -329,6 +329,19 @@ def show_mylog(request):
 def resume_yangli(request):
     return render(request, "guanyin/resume_yangli.html")
 
+
+def index_home(request):
+    return render(request, "guanyin/index_home.html")
+
+
+def index_more(request):
+    return render(request, "guanyin/index_more.html")
+
+
+def index_about(request):
+    return render(request, "guanyin/index_about.html")
+
+
 def my_center(request):
     data_tpl_dict = {}
     logined_username = request.session.get("username", None)

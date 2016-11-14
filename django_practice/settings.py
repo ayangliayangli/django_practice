@@ -27,7 +27,9 @@ DEBUG = True
 # DEBUG = False
 
 # 打开
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "house.yanglix.xyz",
+]
 
 
 # Application definition

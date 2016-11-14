@@ -26,6 +26,10 @@ urlpatterns = [
     url(r"show_mylog/", views.show_mylog, name="show_mylog"),
     url(r"resume_yangli/", views.resume_yangli, name="resume_yangli"),
     url(r"my_center/", views.my_center, name="my_center"),
+    # global page
+    url(r"index_home/", views.index_home, name="index_home"),
+    url(r"index_more/", views.index_more, name="index_more"),
+    url(r"index_about/", views.index_about, name="index_about"),
     # url(r"main/", views.main, name="main"),
 
 ]
