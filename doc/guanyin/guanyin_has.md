@@ -85,6 +85,13 @@
 * [new]在左侧菜单栏出添加作者相关信息
 * [new]点击用户名,显示当前用户相关信息
 
+## 1115
+
+* 优化封面页 
+    * 优化guanyin程序入口 index_more
+    * 三个APP的入口 index_more
+    * 作者相关信息 index_about
+
 # todo
 
 -[x] 新增主机

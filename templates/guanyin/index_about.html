@@ -66,8 +66,9 @@
             </p>
 			
 			<div>
-　　			<img src="/statics/img/believe_cover.jpg" height="300px" width="300px"/>
+　　			    <center><span style="width: 300px;height: 300px" id="skill_distribution_div"> </span> </center>
 			</div>
+
 			
           </div>
 
@@ -96,6 +97,83 @@
 			$('#formbackground').width($(window).width());
 		});
 	</script>
+
+{#    <script src="http://cdn.bootcss.com/echarts/3.3.1/echarts.common.min.js"></script>#}
+    <script src="/statics/plugin/echarts.common.min.js"></script>
+    <script>
+
+        var option = {
+            backgroundColor: '#2c343c',
+
+            title: {
+                text: 'skill distribution',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+
+            visualMap: {
+                show: false,
+                min: 80,
+                max: 600,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series : [
+                {
+                    name:'skill distribution',
+                    type:'pie',
+                    radius : '60%',
+                    center: ['50%', '50%'],
+                    data:[
+                        {value:100, name:'linux'},
+                        {value:200, name:'ops'},
+                        {value:350, name:'python'},
+                        {value:200, name:'communication'},
+                        {value:150, name:'other'}
+                    ].sort(function (a, b) { return a.value - b.value}),
+                    label: {
+                        normal: {
+                            textStyle: {
+                                color: 'rgba(255, 255, 255, 0.3)'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.3)'
+                            },
+                            smooth: 0.2,
+                            length: 10,
+                            length2: 20
+                        }
+                    },
+                    itemStyle: {
+                        enphasis: {
+                            color: '#c23531',
+                            shadowBlur: 200,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+        var mychart = echarts.init(document.getElementById('skill_distribution_div'))
+        mychart.setOption(option)
+
+
+    </script>
   
 
 <div id="global-zeroclipboard-html-bridge" class="global-zeroclipboard-container" style="position: absolute; left: 0px; top: -9999px; width: 15px; height: 15px; z-index: 999999999;" title="" data-original-title="Copy to clipboard">      <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" id="global-zeroclipboard-flash-bridge" width="100%" height="100%">         <param name="movie" value="/assets/flash/ZeroClipboard.swf?noCache=1478316025690">         <param name="allowScriptAccess" value="sameDomain">         <param name="scale" value="exactfit">         <param name="loop" value="false">         <param name="menu" value="false">         <param name="quality" value="best">         <param name="bgcolor" value="#ffffff">         <param name="wmode" value="transparent">         <param name="flashvars" value="trustedOrigins=v3.bootcss.com%2C%2F%2Fv3.bootcss.com%2Chttp%3A%2F%2Fv3.bootcss.com">         <embed src="/assets/flash/ZeroClipboard.swf?noCache=1478316025690" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="100%" height="100%" name="global-zeroclipboard-flash-bridge" allowscriptaccess="sameDomain" allowfullscreen="false" type="application/x-shockwave-flash" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="trustedOrigins=v3.bootcss.com%2C%2F%2Fv3.bootcss.com%2Chttp%3A%2F%2Fv3.bootcss.com" scale="exactfit">                </object></div></body></html>
